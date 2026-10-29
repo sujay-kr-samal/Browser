@@ -7,6 +7,7 @@
 #include "layout/tree_builder.hpp"
 
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -21,11 +22,16 @@ int main(int argc, char* argv[]) {
     bool parse_css_mode = false;
     bool resolve_mode = false;
     bool layout_mode = false;
+    std::string html_file;
 
     for (int i = 1; i < argc; ++i) {
         const std::string_view arg = argv[i];
         if (arg == "--headless") {
             config.headless = true;
+        } else if (arg == "--font" && i + 1 < argc) {
+            config.font_path = argv[++i];
+        } else if (arg == "--open" && i + 1 < argc) {
+            html_file = argv[++i];
         } else if (arg == "--frames" && i + 1 < argc) {
             config.max_frames = static_cast<uint32_t>(std::strtoul(argv[++i], nullptr, 10));
         } else if (arg == "--parse-html" && i + 1 < argc) {
@@ -61,6 +67,8 @@ int main(int argc, char* argv[]) {
                       << "Options:\n"
                       << "  --headless                     Run using dummy video driver (no window displayed)\n"
                       << "  --frames <count>               Exit automatically after rendering <count> frames\n"
+                      << "  --open <file.html>             Open a local HTML file in the interactive window\n"
+                      << "  --font <file.ttf>              Use a specific TrueType/OpenType font file\n"
                       << "  --parse-html \"<html...>\"       Parse HTML string and dump DOM tree\n"
                       << "  --parse-file <file>            Parse HTML file and dump DOM tree\n"
                       << "  --parse-css \"<css...>\"         Parse CSS string and dump rule counts\n"
@@ -136,10 +144,18 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    if (html_file.empty() && argc > 1 && argv[1][0] != '-') {
+        html_file = argv[1];
+    }
+
     divine::Engine engine;
     if (!engine.init(config)) {
         std::cerr << "Failed to initialize Divine Engine.\n";
         return 1;
+    }
+
+    if (!html_file.empty() && !engine.load_file(html_file)) {
+        std::cerr << "[Engine] Page loaded with one or more local resource errors.\n";
     }
 
     engine.run();

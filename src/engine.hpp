@@ -1,6 +1,8 @@
 #pragma once
 
 #include "layout/box.hpp"
+#include "dom/node.hpp"
+#include "paint/text_renderer.hpp"
 #include <SDL3/SDL.h>
 #include <cstdint>
 #include <memory>
@@ -36,6 +38,7 @@ struct EngineConfig {
     uint32_t target_fps = 60;
     uint32_t max_frames = 0; // 0 = run indefinitely until quit
     bool headless = false;
+    std::string font_path;
 };
 
 // Represents a primitive colored rectangle with an optional border
@@ -64,6 +67,7 @@ public:
 
     // Page loading and viewport scrolling
     void load_page(std::string_view html, std::string_view css = "");
+    bool load_file(const std::string& path);
     void scroll_by(float dx, float dy);
     void scroll_to(float x, float y);
     [[nodiscard]] float scroll_x() const noexcept { return m_scroll_x; }
@@ -100,6 +104,8 @@ private:
     uint64_t m_frame_count{0};
 
     std::unique_ptr<layout::LayoutBox> m_layout_root;
+    std::unique_ptr<dom::Document> m_document;
+    std::unique_ptr<paint::TextRenderer> m_text_renderer;
     std::string m_html_source;
     std::string m_css_source;
     float m_scroll_x{0.0f};

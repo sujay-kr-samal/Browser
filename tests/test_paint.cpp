@@ -4,6 +4,7 @@
 #include "layout/box.hpp"
 #include "layout/tree_builder.hpp"
 #include "paint/painter.hpp"
+#include "paint/text_renderer.hpp"
 
 #include <SDL3/SDL.h>
 #include <cassert>
@@ -87,10 +88,15 @@ void test_paint_text() {
     css::StyleResolver resolver;
     auto styles = resolver.resolve_document_styles(*doc);
     auto layout_root = layout::LayoutTreeBuilder::build(*doc, styles);
+    paint::TextRenderer text_renderer(renderer);
+    if (text_renderer.available()) {
+        assert(text_renderer.measure_text("iiii", 24.0f, 400).width <
+               text_renderer.measure_text("WWWW", 24.0f, 400).width);
+    }
 
     layout::Dimensions cb;
     cb.content.width = 400.0f;
-    layout_root->layout(cb);
+    layout_root->layout(cb, &text_renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
@@ -98,7 +104,8 @@ void test_paint_text() {
     paint::PaintOptions options{
         .scroll_x = 0.0f,
         .scroll_y = 0.0f,
-        .viewport = layout::Rect{0.0f, 0.0f, 400.0f, 300.0f}
+        .viewport = layout::Rect{0.0f, 0.0f, 400.0f, 300.0f},
+        .text_renderer = &text_renderer
     };
     paint::Painter::paint(renderer, *layout_root, options);
     SDL_RenderPresent(renderer);
@@ -119,7 +126,13 @@ void test_paint_text() {
         }
         if (found_blue) break;
     }
-    assert(found_blue && "Rendered text must produce blue glyph pixels");
+    if (text_renderer.available()) {
+        assert(found_blue && "Rendered text must produce blue glyph pixels");
+    }
+
+    paint::TextRenderer missing_font(renderer, "/missing/divine-test-font.ttf");
+    assert(!missing_font.available());
+    assert(missing_font.measure_text("safe failure", 16.0f, 400).width == 0.0f);
 
     SDL_DestroySurface(surface);
     SDL_DestroyRenderer(renderer);

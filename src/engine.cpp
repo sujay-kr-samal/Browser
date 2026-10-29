@@ -6,7 +6,10 @@
 #include "paint/painter.hpp"
 
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 
 namespace divine {
 
@@ -157,6 +160,8 @@ Engine::Engine(Engine&& other) noexcept
       m_sdl_initialized(other.m_sdl_initialized),
       m_frame_count(other.m_frame_count),
       m_layout_root(std::move(other.m_layout_root)),
+    m_document(std::move(other.m_document)),
+    m_text_renderer(std::move(other.m_text_renderer)),
       m_html_source(std::move(other.m_html_source)),
       m_css_source(std::move(other.m_css_source)),
       m_scroll_x(other.m_scroll_x),
@@ -182,6 +187,8 @@ Engine& Engine::operator=(Engine&& other) noexcept {
         m_sdl_initialized = other.m_sdl_initialized;
         m_frame_count = other.m_frame_count;
         m_layout_root = std::move(other.m_layout_root);
+        m_document = std::move(other.m_document);
+        m_text_renderer = std::move(other.m_text_renderer);
         m_html_source = std::move(other.m_html_source);
         m_css_source = std::move(other.m_css_source);
         m_scroll_x = other.m_scroll_x;
@@ -198,15 +205,67 @@ void Engine::load_page(std::string_view html, std::string_view css) {
     m_css_source = css;
 
     auto doc = html::Parser::parse_string(m_html_source);
-    auto sheet = css::Parser::parse(m_css_source);
+    std::string all_css(m_css_source);
+    doc->for_each_descendant([&](const dom::Node& node) {
+        if (!node.is_element()) return;
+        const auto& element = static_cast<const dom::Element&>(node);
+        if (element.tag_name() != "style") return;
+        for (const auto& child : element.children()) {
+            if (child->is_text()) {
+                all_css += static_cast<const dom::TextNode&>(*child).data();
+                all_css.push_back('\n');
+            }
+        }
+    });
+    auto sheet = css::Parser::parse(all_css);
     css::StyleResolver resolver(std::move(sheet));
     auto styles = resolver.resolve_document_styles(*doc);
 
-    m_layout_root = layout::LayoutTreeBuilder::build(*doc, styles);
+    m_document = std::move(doc);
+    m_layout_root = layout::LayoutTreeBuilder::build(*m_document, styles);
     m_scroll_x = 0.0f;
     m_scroll_y = 0.0f;
 
     relayout();
+}
+
+bool Engine::load_file(const std::string& path) {
+    std::ifstream file(path, std::ios::binary);
+    if (!file) {
+        std::cerr << "[Engine Error] Could not open HTML file: " << path << '\n';
+        return false;
+    }
+    std::ostringstream content;
+    content << file.rdbuf();
+    load_page(content.str());
+
+    std::string external_css;
+    bool success = true;
+    m_document->for_each_descendant([&](const dom::Node& node) {
+        if (!node.is_element()) return;
+        const auto& element = static_cast<const dom::Element&>(node);
+        if (element.tag_name() != "link" ||
+            element.get_attribute("rel").value_or("") != "stylesheet") return;
+        const auto href = element.get_attribute("href");
+        if (!href || href->empty()) {
+            std::cerr << "[Engine Warning] Stylesheet link has no href; skipped.\n";
+            return;
+        }
+        const auto stylesheet_path = std::filesystem::path(path).parent_path() / std::string(*href);
+        std::ifstream stylesheet(stylesheet_path, std::ios::binary);
+        if (!stylesheet) {
+            std::cerr << "[Engine Warning] Could not open local stylesheet: "
+                      << stylesheet_path.string() << '\n';
+            success = false;
+            return;
+        }
+        std::ostringstream stylesheet_content;
+        stylesheet_content << stylesheet.rdbuf();
+        external_css += stylesheet_content.str();
+        external_css.push_back('\n');
+    });
+    if (!external_css.empty()) load_page(m_html_source, external_css);
+    return success;
 }
 
 void Engine::relayout() {
@@ -214,15 +273,15 @@ void Engine::relayout() {
 
     layout::Dimensions cb;
     cb.content.width = static_cast<float>(m_width);
-    m_layout_root->layout(cb);
+    m_layout_root->layout(cb, m_text_renderer.get());
     clamp_scroll();
 }
 
 void Engine::clamp_scroll() {
     float max_scroll_y = 0.0f;
     if (m_layout_root) {
-        const float content_h = m_layout_root->dimensions().margin_box().height + 70.0f;
-        const float vp_h = std::max(100.0f, static_cast<float>(m_height) - 50.0f);
+        const float content_h = layout::document_height(*m_layout_root);
+        const float vp_h = std::max(10.0f, static_cast<float>(m_height) - 50.0f);
         if (content_h > vp_h) {
             max_scroll_y = content_h - vp_h;
         }
@@ -274,6 +333,11 @@ bool Engine::init(const EngineConfig& config) {
 
     m_window.reset(raw_window);
     m_renderer.reset(raw_renderer);
+    m_text_renderer = std::make_unique<paint::TextRenderer>(m_renderer.get(), m_config.font_path);
+    if (!m_text_renderer->available()) {
+        std::cerr << "[Engine Warning] No usable font found; text will not be rendered. "
+                     "Set DIVINE_FONT_PATH or pass --font.\n";
+    }
 
     if (!SDL_SetRenderVSync(m_renderer.get(), 1)) {
         std::cerr << "[Engine Warning] Could not enable VSync: " << SDL_GetError() << '\n';
@@ -442,12 +506,13 @@ void Engine::render_page() {
             .y = vp_top,
             .width = vp_w,
             .height = vp_h
-        }
+        },
+        .text_renderer = m_text_renderer.get()
     };
 
     paint::Painter::paint(m_renderer.get(), *m_layout_root, options);
 
-    const float total_h = m_layout_root->dimensions().margin_box().height + 70.0f;
+    const float total_h = layout::document_height(*m_layout_root);
     render_scrollbar(vp_top, vp_h, total_h);
 }
 
