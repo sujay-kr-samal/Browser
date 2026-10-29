@@ -12,6 +12,10 @@ endif()
 
 find_package(SDL3 REQUIRED CONFIG)
 find_package(Freetype REQUIRED)
+find_package(PkgConfig QUIET)
+if (PkgConfig_FOUND)
+    pkg_check_modules(FONTCONFIG QUIET IMPORTED_TARGET fontconfig)
+endif()
 
 # Core HTML and DOM library (independent of SDL / GUI)
 add_library(html_lib STATIC
@@ -46,6 +50,10 @@ add_library(paint_lib STATIC
 )
 target_include_directories(paint_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(paint_lib PUBLIC layout_lib SDL3::SDL3 Freetype::Freetype)
+if (FONTCONFIG_FOUND)
+    target_link_libraries(paint_lib PRIVATE PkgConfig::FONTCONFIG)
+    target_compile_definitions(paint_lib PRIVATE DIVINE_HAVE_FONTCONFIG=1)
+endif()
 
 # Engine library (window, renderer, event loop, viewport scrolling)
 add_library(engine_lib STATIC

@@ -76,6 +76,8 @@ int main(int argc, char* argv[]) {
                       << "  --layout \"<html...>\" \"<css...>\" [w] Compute and dump layout tree\n"
                       << "  --help, -h                     Show this help message\n";
             return 0;
+        } else if (i == 1 && !arg.starts_with('-')) {
+            html_file = std::string(arg);
         } else {
             std::cerr << "Unknown argument: " << arg << "\n";
             return 1;
@@ -142,10 +144,6 @@ int main(int argc, char* argv[]) {
         std::cout << "Computed Layout Tree (viewport width: " << layout_viewport_width << "px):\n";
         std::cout << divine::layout::dump_layout_tree(*layout_root);
         return 0;
-    }
-
-    if (html_file.empty() && argc > 1 && argv[1][0] != '-') {
-        html_file = argv[1];
     }
 
     divine::Engine engine;

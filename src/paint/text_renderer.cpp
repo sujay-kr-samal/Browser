@@ -11,6 +11,10 @@
 #include <filesystem>
 #include <vector>
 
+#ifdef DIVINE_HAVE_FONTCONFIG
+#include <fontconfig/fontconfig.h>
+#endif
+
 namespace divine::paint {
 
 struct TextRenderer::Impl {
@@ -87,6 +91,29 @@ TextRenderer::TextRenderer(SDL_Renderer* renderer, std::string_view requested_pa
             break;
         }
     }
+
+#ifdef DIVINE_HAVE_FONTCONFIG
+    if (m_impl->face == nullptr && FcInit()) {
+        FcPattern* pattern = FcPatternCreate();
+        if (pattern != nullptr) {
+            FcPatternAddString(pattern, FC_FAMILY, reinterpret_cast<const FcChar8*>("sans-serif"));
+            FcConfigSubstitute(nullptr, pattern, FcMatchPattern);
+            FcDefaultSubstitute(pattern);
+            FcResult result = FcResultNoMatch;
+            FcPattern* match = FcFontMatch(nullptr, pattern, &result);
+            FcPatternDestroy(pattern);
+            if (match != nullptr) {
+                FcChar8* matched_path = nullptr;
+                if (FcPatternGetString(match, FC_FILE, 0, &matched_path) == FcResultMatch &&
+                    FT_New_Face(m_impl->library, reinterpret_cast<const char*>(matched_path),
+                                0, &m_impl->face) == 0) {
+                    m_impl->path = reinterpret_cast<const char*>(matched_path);
+                }
+                FcPatternDestroy(match);
+            }
+        }
+    }
+#endif
 }
 
 TextRenderer::~TextRenderer() = default;

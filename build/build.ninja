@@ -192,17 +192,19 @@ build liblayout_lib.a: CXX_STATIC_LIBRARY_LINKER__layout_lib_ CMakeFiles/layout_
 build cmake_object_order_depends_target_paint_lib: phony || cmake_object_order_depends_target_css_lib cmake_object_order_depends_target_html_lib cmake_object_order_depends_target_layout_lib
 
 build CMakeFiles/paint_lib.dir/src/paint/painter.cpp.o: CXX_COMPILER__paint_lib_unscanned_ /home/sujay/Documents/Browser/src/paint/painter.cpp || cmake_object_order_depends_target_paint_lib
+  DEFINES = -DDIVINE_HAVE_FONTCONFIG=1
   DEP_FILE = CMakeFiles/paint_lib.dir/src/paint/painter.cpp.o.d
-  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic
-  INCLUDES = -I/home/sujay/Documents/Browser/src -isystem /usr/include/freetype2
+  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic -DWITH_GZFILEOP
+  INCLUDES = -I/home/sujay/Documents/Browser/src -isystem /usr/include/freetype2 -isystem /usr/include/libpng16
   OBJECT_DIR = CMakeFiles/paint_lib.dir
   OBJECT_FILE_DIR = CMakeFiles/paint_lib.dir/src/paint
   TARGET_SUPPORT_DIR = CMakeFiles/paint_lib.dir
 
 build CMakeFiles/paint_lib.dir/src/paint/text_renderer.cpp.o: CXX_COMPILER__paint_lib_unscanned_ /home/sujay/Documents/Browser/src/paint/text_renderer.cpp || cmake_object_order_depends_target_paint_lib
+  DEFINES = -DDIVINE_HAVE_FONTCONFIG=1
   DEP_FILE = CMakeFiles/paint_lib.dir/src/paint/text_renderer.cpp.o.d
-  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic
-  INCLUDES = -I/home/sujay/Documents/Browser/src -isystem /usr/include/freetype2
+  FLAGS = -std=c++20 -Wall -Wextra -Wpedantic -DWITH_GZFILEOP
+  INCLUDES = -I/home/sujay/Documents/Browser/src -isystem /usr/include/freetype2 -isystem /usr/include/libpng16
   OBJECT_DIR = CMakeFiles/paint_lib.dir
   OBJECT_FILE_DIR = CMakeFiles/paint_lib.dir/src/paint
   TARGET_SUPPORT_DIR = CMakeFiles/paint_lib.dir
@@ -281,10 +283,10 @@ build CMakeFiles/divine-engine.dir/src/main.cpp.o: CXX_COMPILER__divine-engine_u
 #############################################
 # Link the executable divine-engine
 
-build divine-engine: CXX_EXECUTABLE_LINKER__divine-engine_ CMakeFiles/divine-engine.dir/src/main.cpp.o | libengine_lib.a libhtml_lib.a libcss_lib.a liblayout_lib.a libpaint_lib.a liblayout_lib.a libcss_lib.a libhtml_lib.a /usr/lib/libfreetype.so /usr/lib/libSDL3.so.0.4.18 || libcss_lib.a libengine_lib.a libhtml_lib.a liblayout_lib.a libpaint_lib.a
+build divine-engine: CXX_EXECUTABLE_LINKER__divine-engine_ CMakeFiles/divine-engine.dir/src/main.cpp.o | libengine_lib.a libhtml_lib.a libcss_lib.a liblayout_lib.a libpaint_lib.a liblayout_lib.a libcss_lib.a libhtml_lib.a /usr/lib/libfreetype.so /usr/lib/libfontconfig.so /usr/lib/libSDL3.so.0.4.18 || libcss_lib.a libengine_lib.a libhtml_lib.a liblayout_lib.a libpaint_lib.a
   DEP_FILE = CMakeFiles/divine-engine.dir/link.d
   LINK_FLAGS = -Wl,--dependency-file=CMakeFiles/divine-engine.dir/link.d
-  LINK_LIBRARIES = libengine_lib.a  libhtml_lib.a  libcss_lib.a  liblayout_lib.a  libpaint_lib.a  liblayout_lib.a  libcss_lib.a  libhtml_lib.a  /usr/lib/libfreetype.so  /usr/lib/libSDL3.so.0.4.18
+  LINK_LIBRARIES = libengine_lib.a  libhtml_lib.a  libcss_lib.a  liblayout_lib.a  libpaint_lib.a  liblayout_lib.a  libcss_lib.a  libhtml_lib.a  /usr/lib/libfreetype.so  /usr/lib/libfontconfig.so  /usr/lib/libSDL3.so.0.4.18
   OBJECT_DIR = CMakeFiles/divine-engine.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -317,10 +319,10 @@ build CMakeFiles/engine_test.dir/tests/test_engine.cpp.o: CXX_COMPILER__engine_t
 #############################################
 # Link the executable engine_test
 
-build engine_test: CXX_EXECUTABLE_LINKER__engine_test_ CMakeFiles/engine_test.dir/tests/test_engine.cpp.o | libengine_lib.a libpaint_lib.a /usr/lib/libSDL3.so.0.4.18 liblayout_lib.a libcss_lib.a libhtml_lib.a /usr/lib/libfreetype.so || libcss_lib.a libengine_lib.a libhtml_lib.a liblayout_lib.a libpaint_lib.a
+build engine_test: CXX_EXECUTABLE_LINKER__engine_test_ CMakeFiles/engine_test.dir/tests/test_engine.cpp.o | libengine_lib.a libpaint_lib.a /usr/lib/libSDL3.so.0.4.18 liblayout_lib.a libcss_lib.a libhtml_lib.a /usr/lib/libfreetype.so /usr/lib/libfontconfig.so || libcss_lib.a libengine_lib.a libhtml_lib.a liblayout_lib.a libpaint_lib.a
   DEP_FILE = CMakeFiles/engine_test.dir/link.d
   LINK_FLAGS = -Wl,--dependency-file=CMakeFiles/engine_test.dir/link.d
-  LINK_LIBRARIES = libengine_lib.a  libpaint_lib.a  /usr/lib/libSDL3.so.0.4.18  liblayout_lib.a  libcss_lib.a  libhtml_lib.a  /usr/lib/libfreetype.so
+  LINK_LIBRARIES = libengine_lib.a  libpaint_lib.a  /usr/lib/libSDL3.so.0.4.18  liblayout_lib.a  libcss_lib.a  libhtml_lib.a  /usr/lib/libfreetype.so  /usr/lib/libfontconfig.so
   OBJECT_DIR = CMakeFiles/engine_test.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -461,10 +463,10 @@ build CMakeFiles/paint_test.dir/tests/test_paint.cpp.o: CXX_COMPILER__paint_test
 #############################################
 # Link the executable paint_test
 
-build paint_test: CXX_EXECUTABLE_LINKER__paint_test_ CMakeFiles/paint_test.dir/tests/test_paint.cpp.o | libpaint_lib.a liblayout_lib.a libcss_lib.a libhtml_lib.a /usr/lib/libSDL3.so.0.4.18 /usr/lib/libfreetype.so || libcss_lib.a libhtml_lib.a liblayout_lib.a libpaint_lib.a
+build paint_test: CXX_EXECUTABLE_LINKER__paint_test_ CMakeFiles/paint_test.dir/tests/test_paint.cpp.o | libpaint_lib.a liblayout_lib.a libcss_lib.a libhtml_lib.a /usr/lib/libSDL3.so.0.4.18 /usr/lib/libfreetype.so /usr/lib/libfontconfig.so || libcss_lib.a libhtml_lib.a liblayout_lib.a libpaint_lib.a
   DEP_FILE = CMakeFiles/paint_test.dir/link.d
   LINK_FLAGS = -Wl,--dependency-file=CMakeFiles/paint_test.dir/link.d
-  LINK_LIBRARIES = libpaint_lib.a  liblayout_lib.a  libcss_lib.a  libhtml_lib.a  /usr/lib/libSDL3.so.0.4.18  /usr/lib/libfreetype.so
+  LINK_LIBRARIES = libpaint_lib.a  liblayout_lib.a  libcss_lib.a  libhtml_lib.a  /usr/lib/libSDL3.so.0.4.18  /usr/lib/libfreetype.so  /usr/lib/libfontconfig.so
   OBJECT_DIR = CMakeFiles/paint_test.dir
   POST_BUILD = :
   PRE_LINK = :

@@ -84,9 +84,22 @@ std::unique_ptr<LayoutBox> LayoutTreeBuilder::build(
     const std::unordered_map<const dom::Element*, css::ComputedStyle>& styles) {
 
     if (root.is_document()) {
-        const auto& doc = static_cast<const dom::Document&>(root);
+        const auto& children = root.children();
+        const dom::Node* only_renderable_child = nullptr;
+        size_t renderable_children = 0;
+        for (const auto& child : children) {
+            if (child->is_element() || (child->is_text() &&
+                !is_only_whitespace(static_cast<const dom::TextNode&>(*child).data()))) {
+                only_renderable_child = child.get();
+                ++renderable_children;
+            }
+        }
+        if (renderable_children == 1 && only_renderable_child->is_element()) {
+            return build_recursive(*only_renderable_child, styles, nullptr);
+        }
+
         auto root_box = std::make_unique<LayoutBox>(BoxType::Anonymous, &root, nullptr);
-        for (const auto& child : root.children()) {
+        for (const auto& child : children) {
             auto child_box = build_recursive(*child, styles, nullptr);
             if (child_box) {
                 root_box->append_child(std::move(child_box));

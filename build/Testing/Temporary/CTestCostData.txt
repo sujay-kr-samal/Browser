@@ -1,7 +1,6 @@
-EngineTest 11 0.0251436
-HtmlTest 8 0.000523167
-CssTest 5 0.000574952
-LayoutTest 3 0.00149064
-PaintTest 0 0
+EngineTest 13 0.0216468
+HtmlTest 10 0.00031541
+CssTest 7 0.000408833
+LayoutTest 4 0.000661311
+PaintTest 2 0.00459336
 ---
-PaintTest

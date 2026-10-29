@@ -1,25 +1,32 @@
-Start testing: Oct 29 20:52 IST
+Start testing: Oct 29 21:03 IST
 ----------------------------------------------------------
 1/5 Testing: EngineTest
 1/5 Test: EngineTest
 Command: "/home/sujay/Documents/Browser/build/engine_test"
 Directory: /home/sujay/Documents/Browser/build
-"EngineTest" start time: Oct 29 20:52 IST
+"EngineTest" start time: Oct 29 21:03 IST
 Output:
 ----------------------------------------------------------
 Running Divine Engine tests...
+[Engine Warning] No usable font found; text will not be rendered. Set DIVINE_FONT_PATH or pass --font.
 [Engine] Initialized successfully (800x600, driver: dummy)
 [PASS] test_initialization
+[Engine Warning] No usable font found; text will not be rendered. Set DIVINE_FONT_PATH or pass --font.
 [Engine] Initialized successfully (800x600, driver: dummy)
 [PASS] test_render_and_pixel_verification
+[Engine Warning] No usable font found; text will not be rendered. Set DIVINE_FONT_PATH or pass --font.
 [Engine] Initialized successfully (640x480, driver: dummy)
 [PASS] test_bounded_frame_loop
+[Engine Warning] No usable font found; text will not be rendered. Set DIVINE_FONT_PATH or pass --font.
+[Engine] Initialized successfully (400x300, driver: dummy)
+[Engine Error] Could not open HTML file: /tmp/divine-engine-malformed.html.missing
+[PASS] test_page_scroll_clamping_and_empty_page
 All Divine Engine tests passed successfully!
 <end of output>
 Test time =   0.28 sec
 ----------------------------------------------------------
 Test Passed.
-"EngineTest" end time: Oct 29 20:52 IST
+"EngineTest" end time: Oct 29 21:03 IST
 "EngineTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -27,7 +34,7 @@ Test Passed.
 2/5 Test: HtmlTest
 Command: "/home/sujay/Documents/Browser/build/html_test"
 Directory: /home/sujay/Documents/Browser/build
-"HtmlTest" start time: Oct 29 20:52 IST
+"HtmlTest" start time: Oct 29 21:03 IST
 Output:
 ----------------------------------------------------------
 Running Divine Engine DOM & HTML Parser Tests...
@@ -44,7 +51,7 @@ All DOM & HTML Parser Tests Passed Successfully!
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"HtmlTest" end time: Oct 29 20:52 IST
+"HtmlTest" end time: Oct 29 21:03 IST
 "HtmlTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -52,7 +59,7 @@ Test Passed.
 3/5 Test: CssTest
 Command: "/home/sujay/Documents/Browser/build/css_test"
 Directory: /home/sujay/Documents/Browser/build
-"CssTest" start time: Oct 29 20:52 IST
+"CssTest" start time: Oct 29 21:03 IST
 Output:
 ----------------------------------------------------------
 Running Divine Engine CSS & Style Resolution Tests...
@@ -68,7 +75,7 @@ All CSS & Style Resolution Tests Passed Successfully!
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"CssTest" end time: Oct 29 20:52 IST
+"CssTest" end time: Oct 29 21:03 IST
 "CssTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -76,7 +83,7 @@ Test Passed.
 4/5 Test: LayoutTest
 Command: "/home/sujay/Documents/Browser/build/layout_test"
 Directory: /home/sujay/Documents/Browser/build
-"LayoutTest" start time: Oct 29 20:52 IST
+"LayoutTest" start time: Oct 29 21:03 IST
 Output:
 ----------------------------------------------------------
 Running Divine Engine Layout Tests...
@@ -92,7 +99,7 @@ All Divine Engine Layout Tests Passed Successfully!
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"LayoutTest" end time: Oct 29 20:52 IST
+"LayoutTest" end time: Oct 29 21:03 IST
 "LayoutTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -100,16 +107,20 @@ Test Passed.
 5/5 Test: PaintTest
 Command: "/home/sujay/Documents/Browser/build/paint_test"
 Directory: /home/sujay/Documents/Browser/build
-"PaintTest" start time: Oct 29 20:52 IST
+"PaintTest" start time: Oct 29 21:03 IST
 Output:
 ----------------------------------------------------------
-paint_test: /home/sujay/Documents/Browser/tests/test_paint.cpp:60: void test_paint_background_and_borders(): Assertion `r == 0 && g == 255 && b == 0' failed.
+Running Divine Engine Paint & Viewport Scrolling Tests...
+[PASS] test_paint_background_and_borders
+[PASS] test_paint_text
+[PASS] test_paint_viewport_scrolling
+All Paint & Viewport Scrolling Tests Passed Successfully!
 <end of output>
-Test time =   0.14 sec
+Test time =   0.01 sec
 ----------------------------------------------------------
-Test Failed.
-"PaintTest" end time: Oct 29 20:52 IST
+Test Passed.
+"PaintTest" end time: Oct 29 21:03 IST
 "PaintTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Oct 29 20:52 IST
+End testing: Oct 29 21:03 IST
