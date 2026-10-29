@@ -1,0 +1,115 @@
+Start testing: Oct 29 20:52 IST
+----------------------------------------------------------
+1/5 Testing: EngineTest
+1/5 Test: EngineTest
+Command: "/home/sujay/Documents/Browser/build/engine_test"
+Directory: /home/sujay/Documents/Browser/build
+"EngineTest" start time: Oct 29 20:52 IST
+Output:
+----------------------------------------------------------
+Running Divine Engine tests...
+[Engine] Initialized successfully (800x600, driver: dummy)
+[PASS] test_initialization
+[Engine] Initialized successfully (800x600, driver: dummy)
+[PASS] test_render_and_pixel_verification
+[Engine] Initialized successfully (640x480, driver: dummy)
+[PASS] test_bounded_frame_loop
+All Divine Engine tests passed successfully!
+<end of output>
+Test time =   0.28 sec
+----------------------------------------------------------
+Test Passed.
+"EngineTest" end time: Oct 29 20:52 IST
+"EngineTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/5 Testing: HtmlTest
+2/5 Test: HtmlTest
+Command: "/home/sujay/Documents/Browser/build/html_test"
+Directory: /home/sujay/Documents/Browser/build
+"HtmlTest" start time: Oct 29 20:52 IST
+Output:
+----------------------------------------------------------
+Running Divine Engine DOM & HTML Parser Tests...
+[PASS] test_empty_document
+[PASS] test_nested_elements
+[PASS] test_preserving_text_content
+[PASS] test_multiple_attributes
+[PASS] test_comments_and_doctypes
+[PASS] test_void_and_self_closing_elements
+[PASS] test_malformed_input
+[PASS] test_tree_traversal
+All DOM & HTML Parser Tests Passed Successfully!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"HtmlTest" end time: Oct 29 20:52 IST
+"HtmlTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/5 Testing: CssTest
+3/5 Test: CssTest
+Command: "/home/sujay/Documents/Browser/build/css_test"
+Directory: /home/sujay/Documents/Browser/build
+"CssTest" start time: Oct 29 20:52 IST
+Output:
+----------------------------------------------------------
+Running Divine Engine CSS & Style Resolution Tests...
+[PASS] test_color_and_length_parsing
+[PASS] test_css_parsing
+[PASS] test_selector_matching
+[PASS] test_specificity_and_precedence
+[PASS] test_inheritance_and_defaults
+[PASS] test_box_edges_shorthand
+[PASS] test_malformed_css_resilience
+All CSS & Style Resolution Tests Passed Successfully!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"CssTest" end time: Oct 29 20:52 IST
+"CssTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: LayoutTest
+4/5 Test: LayoutTest
+Command: "/home/sujay/Documents/Browser/build/layout_test"
+Directory: /home/sujay/Documents/Browser/build
+"LayoutTest" start time: Oct 29 20:52 IST
+Output:
+----------------------------------------------------------
+Running Divine Engine Layout Tests...
+[PASS] test_single_element_geometry
+[PASS] test_nested_block_elements
+[PASS] test_vertical_stacking
+[PASS] test_parent_relative_and_absolute_coordinates
+[PASS] test_auto_margins_centering
+[PASS] test_empty_elements
+[PASS] test_viewport_resizing
+All Divine Engine Layout Tests Passed Successfully!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"LayoutTest" end time: Oct 29 20:52 IST
+"LayoutTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/5 Testing: PaintTest
+5/5 Test: PaintTest
+Command: "/home/sujay/Documents/Browser/build/paint_test"
+Directory: /home/sujay/Documents/Browser/build
+"PaintTest" start time: Oct 29 20:52 IST
+Output:
+----------------------------------------------------------
+paint_test: /home/sujay/Documents/Browser/tests/test_paint.cpp:60: void test_paint_background_and_borders(): Assertion `r == 0 && g == 255 && b == 0' failed.
+<end of output>
+Test time =   0.14 sec
+----------------------------------------------------------
+Test Failed.
+"PaintTest" end time: Oct 29 20:52 IST
+"PaintTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 29 20:52 IST
