@@ -69,5 +69,4 @@ The non-interactive parser and inspection modes remain available:
 ## Current limitations
 
 This is an early browser engine, not a standards-complete browser. CSS selectors and properties are limited; layout and inline flow are basic, and wrapping is based on DOM text nodes rather than complete CSS line boxes. External stylesheets are local only. There is no networking, JavaScript, image decoding, horizontal scrolling, or functional address bar/navigation controls.
-# Browser
-# Browser
+
